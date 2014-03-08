@@ -29,7 +29,7 @@ Plugin.create :mikutter_terminal do
           role: :pane) do
     box = terminal_box_class.new
 
-    tab(:terminal, "端") do
+    tab(:"terminal_#{Time.now.to_i}", "端") do
       box.terminal.signal_connect("child-exited") { self.destroy }
 
       temporary_tab
