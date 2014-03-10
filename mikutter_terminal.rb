@@ -54,7 +54,7 @@ Plugin.create :mikutter_terminal do
     tab(:"terminal_#{Time.now.to_i}", "端") do
       box.terminal.signal_connect("child-exited") { self.destroy }
 
-      temporary_tab
+      temporary_tab if defined?(temporary_tab) # develop branch
       nativewidget box
       active!
     end
