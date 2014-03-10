@@ -6,6 +6,7 @@ Plugin.create :mikutter_terminal do
 
   terminal_box_class = Class.new(Gtk::HBox) do
     attr_reader :terminal, :scrollbar
+
     def initialize
       super
 
