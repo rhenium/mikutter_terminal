@@ -11,7 +11,7 @@ Plugin.create :mikutter_terminal do
 
       @terminal = Vte::Terminal.new
       @terminal.set_font(UserConfig[:mikutter_terminal_font])
-      @terminal.fork_command(argv: [ENV["SHELL"] || "sh"])
+      @terminal.fork_command
       terminal_set_context_menu
 
       @scrollbar = Gtk::VScrollbar.new(@terminal.adjustment)
