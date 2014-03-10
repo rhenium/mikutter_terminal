@@ -12,7 +12,7 @@ Plugin.create :mikutter_terminal do
       @terminal = Vte::Terminal.new
       @terminal.set_font(UserConfig[:mikutter_terminal_font])
       @terminal.fork_command(argv: [ENV["SHELL"] || "sh"])
-      set_context_menu @terminal
+      terminal_set_context_menu
 
       @scrollbar = Gtk::VScrollbar.new(@terminal.adjustment)
 
@@ -24,22 +24,22 @@ Plugin.create :mikutter_terminal do
     end
 
     private
-    def set_context_menu(widget)
-      widget.signal_connect("button-press-event") do |this, event|
+    def terminal_set_context_menu
+      @terminal.signal_connect("button-press-event") do |this, event|
         if event.button == 3
           contextmenu = []
 
           contextmenu << ["バッファをクリア",
                           ->(x) { true },
-                          ->(x) { widget.reset(true, true) }]
+                          ->(x) { @terminal.reset(true, true) }]
           contextmenu << ["クリップボードにコピー",
-                          ->(x) { widget.has_selection? },
-                          ->(x) { widget.copy_clipboard }]
+                          ->(x) { @terminal.has_selection? },
+                          ->(x) { @terminal.copy_clipboard }]
           contextmenu << ["クリップボードから貼り付け",
                           ->(x) { true },
-                          ->(x) { widget.paste_clipboard }]
+                          ->(x) { @terminal.paste_clipboard }]
 
-          Gtk::ContextMenu.new(*contextmenu).popup(widget, widget)
+          Gtk::ContextMenu.new(*contextmenu).popup(widget, @terminal)
         end
       end
     end
